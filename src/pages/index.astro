@@ -1,7 +1,10 @@
 ---
 import { Image } from 'astro:assets';
+import '../styles/landing.css';
 import '../styles/sitio.css';
 import panel from '../assets/panel.png';
+import ventas from '../assets/ventas.png';
+import mVentas from '../assets/m-ventas.png';
 
 const BASE = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 const URL_SITIO = 'https://appgestia.github.io/appgestia.landing/';
@@ -11,6 +14,7 @@ const CONTACTO = 'https://wa.me/5490000000000';
 const titulo = 'Gestia · Software a medida para tu negocio';
 const desc = 'Sistemas de gestión, páginas web, tiendas online, apps y automatizaciones para pymes y comercios. Te ayudamos de la idea a la entrega.';
 
+// íconos con el mismo trazo que la app
 const I = {
   gestion: '<rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4M7 13l3-3 2 2 5-5"/>',
   web: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/>',
@@ -32,19 +36,11 @@ const soluciones = [
   ['reportes', 'Reportes e integraciones', 'Juntamos los datos que tenés repartidos y los convertimos en números claros para decidir.'],
 ];
 
-// tablero de ejemplo para el hero: cada columna lleva un solo punto de color
-const tablero = [
-  { col: 'Idea', color: 'azul', items: [['Turnos online', 'Consultorio odontológico', 'hace 2 h'], ['Catálogo web', 'Vivero', 'ayer']] },
-  { col: 'Diseño', color: 'naranja', items: [['Tienda online', 'Dietética', 'hoy'], ['Pedidos por WhatsApp', 'Rotisería', 'hace 3 d']] },
-  { col: 'Desarrollo', color: 'azul', items: [['Panel de ventas', 'Distribuidora', 'hoy']] },
-  { col: 'Entregado', color: 'verde', items: [['Control de stock', 'Fiambrería', 'en uso'], ['Landing', 'Estudio contable', 'en uso']] },
-];
-
 const pasos = [
-  ['01', 'Charlamos', 'Nos contás cómo trabajás hoy y qué te gustaría resolver. Sin tecnicismos.'],
-  ['02', 'Propuesta', 'Te mostramos qué vamos a hacer, en cuánto tiempo y cuánto sale, antes de empezar.'],
-  ['03', 'Desarrollo', 'Vas viendo avances reales cada semana y los podés probar desde tu celular.'],
-  ['04', 'Entrega y soporte', 'Lo dejamos andando, te enseñamos a usarlo y seguimos cerca para lo que haga falta.'],
+  ['1', 'Charlamos', 'Nos contás cómo trabajás hoy y qué te gustaría resolver. Sin tecnicismos.'],
+  ['2', 'Propuesta', 'Te mostramos qué vamos a hacer, en cuánto tiempo y cuánto sale, antes de empezar.'],
+  ['3', 'Desarrollo', 'Vas viendo avances reales cada semana y los podés probar desde tu celular.'],
+  ['4', 'Entrega y soporte', 'Lo dejamos andando, te enseñamos a usarlo y seguimos cerca para lo que haga falta.'],
 ];
 
 const rubros = ['Comercios', 'Consultorios', 'Gastronomía', 'Distribuidoras', 'Estudios profesionales', 'Educación', 'Servicios', 'Talleres'];
@@ -63,7 +59,7 @@ const preguntas = [
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{titulo}</title>
   <meta name="description" content={desc}>
-  <meta name="theme-color" content="#fcfcfc">
+  <meta name="theme-color" content="#0B2E33">
   <link rel="icon" href={`${BASE}favicon.svg`} type="image/svg+xml">
   <link rel="canonical" href={URL_SITIO}>
   <meta property="og:type" content="website">
@@ -73,62 +69,57 @@ const preguntas = [
   <meta property="og:locale" content="es_AR">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
   <header class="nav">
     <div class="wrap navin">
-      <a class="marca" href={BASE} aria-label="Gestia, inicio"><span class="logo">g</span><b>gestia</b></a>
+      <a class="marca" href={BASE} aria-label="Gestia, inicio"><img src={`${BASE}favicon.svg`} alt="" width="32" height="32"><b>gestia</b></a>
       <nav aria-label="Secciones">
         <a href="#soluciones">Soluciones</a>
         <a href="#productos">Productos</a>
         <a href="#como">Cómo trabajamos</a>
         <a href="#preguntas">Preguntas</a>
       </nav>
-      <a class="btn sm" href={CONTACTO}>Hablemos</a>
+      <a class="btn pri sm" href={CONTACTO}>Hablemos</a>
     </div>
   </header>
 
   <main>
     <section class="hero">
-      <div class="wrap">
-        <p class="sello"><i></i>Software a medida para pymes</p>
-        <h1>Software que hace <span>crecer</span> tu negocio</h1>
-        <p class="bajada">Sistemas de gestión, páginas web, tiendas online y automatizaciones. Te acompañamos de la idea a la entrega, sin vueltas.</p>
+      <div class="wrap heroc">
+        <p class="eyebrow">Software a medida para pymes</p>
+        <h1>Software que hace <span>crecer</span> tu negocio.</h1>
+        <p class="lead">Sistemas de gestión, páginas web, tiendas online y automatizaciones. Te acompañamos de la idea a la entrega, sin vueltas.</p>
         <div class="ctas">
-          <a class="btn lg" href={CONTACTO}>Contanos tu idea <Fragment set:html={svg(I.flecha)} /></a>
-          <a class="link" href="#soluciones">Ver soluciones</a>
+          <a class="btn pri lg" href={CONTACTO}>Contanos tu idea <Fragment set:html={svg(I.flecha)} /></a>
+          <a class="btn ghost lg" href="#soluciones">Ver soluciones</a>
+        </div>
+        <div class="herovis vis-centro">
+          <div class="pc"><div class="pcbar"><i></i><i></i><i></i></div><Image src={panel} alt="Gestia, uno de nuestros sistemas, en la compu" widths={[720, 1280, 1920]} sizes="(max-width: 980px) 92vw, 960px" loading="eager" /></div>
+          <div class="cel"><Image src={mVentas} alt="Gestia en el celular" widths={[260, 390]} sizes="200px" loading="eager" /></div>
         </div>
       </div>
     </section>
 
-    <section class="wrap tablero-sec" aria-label="Ejemplo de proyectos en curso">
-      <div class="tablero">
-        {tablero.map(c => (
-          <div class="columna">
-            <div class="col-tit"><i class={`punto ${c.color}`}></i>{c.col}<span>{c.items.length}</span></div>
-            {c.items.map(([t, cli, cuando]) => (
-              <div class="tarjeta">
-                <b>{t}</b>
-                <small>{cli}</small>
-                <div class="tarjeta-pie"><span class="avatar">{cli[0]}</span><time>{cuando}</time></div>
-              </div>
-            ))}
-          </div>
-        ))}
+    <section class="rubros" aria-label="Rubros">
+      <div class="wrap">
+        <p>Trabajamos con</p>
+        <ul>{rubros.map(r => <li>{r}</li>)}</ul>
       </div>
     </section>
 
-    <section class="seccion" id="soluciones">
+    <section class="sec" id="soluciones">
       <div class="wrap">
-        <div class="titulo">
-          <h2>Soluciones para cada parte de tu negocio</h2>
+        <div class="tit">
+          <p class="eyebrow">Soluciones</p>
+          <h2>Para cada parte de tu negocio</h2>
           <p>Elegí por dónde empezar. Todo se puede combinar y crecer con vos.</p>
         </div>
-        <div class="grilla">
+        <div class="fgrid">
           {soluciones.map(([ic, t, d]) => (
-            <article class="sol">
-              <div class="ico"><Fragment set:html={svg(I[ic as keyof typeof I])} /></div>
+            <article class="fcard rv">
+              <div class="fic"><Fragment set:html={svg(I[ic as keyof typeof I])} /></div>
               <h3>{t}</h3>
               <p>{d}</p>
             </article>
@@ -137,71 +128,85 @@ const preguntas = [
       </div>
     </section>
 
-    <section class="seccion" id="productos">
-      <div class="wrap">
-        <div class="destacado">
-          <div class="dest-txt">
-            <p class="etiqueta">Producto propio</p>
-            <h2>Gestia para comercios.</h2>
-            <p>Nuestro sistema de ventas, stock y cuentas corrientes, listo para usar. Lo usan almacenes, fiambrerías y dietéticas todos los días.</p>
-            <ul>
-              <li><Fragment set:html={svg(I.check)} />Funciona en la compu o el celular, sin instalar nada</li>
-              <li><Fragment set:html={svg(I.check)} />Sigue andando aunque se corte internet</li>
-              <li><Fragment set:html={svg(I.check)} />Fiado, caja, compras y reportes en un solo lugar</li>
-            </ul>
-            <div class="ctas izq">
-              <a class="btn" href={`${BASE}gestia/`}>Conocé Gestia</a>
-              <a class="link" href={APP}>Probala gratis</a>
-            </div>
+    <section class="sec alt" id="productos">
+      <div class="wrap show">
+        <div class="showtxt">
+          <p class="eyebrow">Producto propio</p>
+          <h2>Gestia para comercios.</h2>
+          <ul class="lista">
+            <li><Fragment set:html={svg(I.check)} />Ventas, stock y fiado en un solo lugar</li>
+            <li><Fragment set:html={svg(I.check)} />Funciona en la compu o el celular, sin instalar nada</li>
+            <li><Fragment set:html={svg(I.check)} />Sigue andando aunque se corte internet</li>
+          </ul>
+          <div class="ctas">
+            <a class="btn pri" href={`${BASE}gestia/`}>Conocé Gestia <Fragment set:html={svg(I.flecha)} /></a>
+            <a class="btn sec-link" href={APP}>Probala gratis</a>
           </div>
-          <div class="dest-img"><Image src={panel} alt="Panel de Gestia con las ventas del día y el gráfico del mes" widths={[720, 1280]} sizes="(max-width: 900px) 92vw, 600px" /></div>
         </div>
+        <div class="shot"><Image src={ventas} alt="Pantalla de ventas de Gestia con productos y el detalle de la venta" widths={[720, 1280, 1920]} sizes="(max-width: 980px) 92vw, 640px" /></div>
       </div>
     </section>
 
-    <section class="seccion" id="como">
+    <section class="sec" id="como">
       <div class="wrap">
-        <div class="titulo">
-          <h2>Cómo trabajamos</h2>
-          <p>Un proceso simple, con precios claros y avances que podés ver.</p>
+        <div class="tit">
+          <p class="eyebrow">Cómo trabajamos</p>
+          <h2>Simple, claro y con avances que podés ver</h2>
         </div>
-        <ol class="pasos">
+        <div class="vgrid">
           {pasos.map(([n, t, d]) => (
-            <li><span class="num">{n}</span><h3>{t}</h3><p>{d}</p></li>
+            <div class="vcard rv">
+              <div class="fic num">{n}</div>
+              <h3>{t}</h3>
+              <p>{d}</p>
+            </div>
           ))}
-        </ol>
+        </div>
       </div>
     </section>
 
-    <section class="rubros">
+    <section class="sec faq-sec" id="preguntas">
+      <div class="wrap faq">
+        <div class="tit"><p class="eyebrow">Preguntas</p><h2>Lo que más nos consultan</h2></div>
+        <div class="faqs">
+          {preguntas.map(([p, r]) => (
+            <details><summary>{p}</summary><p>{r}</p></details>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="sec precio" id="contacto">
       <div class="wrap">
-        <p>Trabajamos con negocios de todo tipo</p>
-        <ul>{rubros.map(r => <li>{r}</li>)}</ul>
+        <div class="pcard">
+          <div>
+            <p class="eyebrow">Contacto</p>
+            <h2>¿Tenés una idea? Hablemos.</h2>
+            <p>Contanos qué necesitás y te respondemos en el día.</p>
+          </div>
+          <a class="btn mint lg" href={CONTACTO}>Escribinos por WhatsApp <Fragment set:html={svg(I.flecha)} /></a>
+        </div>
       </div>
-    </section>
-
-    <section class="seccion" id="preguntas">
-      <div class="wrap angosto">
-        <div class="titulo"><h2>Preguntas frecuentes</h2></div>
-        {preguntas.map(([p, r]) => (
-          <details><summary>{p}</summary><p>{r}</p></details>
-        ))}
-      </div>
-    </section>
-
-    <section class="wrap cierre" id="contacto">
-      <h2>¿Tenés una idea? <span>Hablemos.</span></h2>
-      <p>Contanos qué necesitás y te respondemos en el día.</p>
-      <a class="btn lg" href={CONTACTO}>Escribinos por WhatsApp <Fragment set:html={svg(I.flecha)} /></a>
     </section>
   </main>
 
   <footer class="pie">
     <div class="wrap piein">
-      <a class="marca" href={BASE}><span class="logo">g</span><b>gestia</b></a>
+      <a class="marca" href={BASE}><img src={`${BASE}favicon.svg`} alt="" width="28" height="28"><b>gestia</b></a>
       <p>Software a medida para pymes y comercios.</p>
       <a href={`${BASE}gestia/`}>Gestia para comercios</a>
     </div>
   </footer>
+
+  <script>
+    // aparición suave al bajar; sin animación si el sistema pide reducir movimiento
+    const els = document.querySelectorAll('.rv');
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
+      els.forEach(e => e.classList.add('in'));
+    } else {
+      const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
+      els.forEach(e => io.observe(e));
+    }
+  </script>
 </body>
 </html>
