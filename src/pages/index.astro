@@ -43,6 +43,7 @@ const pasos = [
   ['4', 'Entrega y soporte', 'Lo dejamos andando, te enseñamos a usarlo y seguimos cerca para lo que haga falta.'],
 ];
 
+const h1 = ['Software', 'que', 'hace', 'crecer', 'tu', 'negocio.'];
 const rubros = ['Comercios', 'Consultorios', 'Gastronomía', 'Distribuidoras', 'Estudios profesionales', 'Educación', 'Servicios', 'Talleres'];
 
 const preguntas = [
@@ -70,8 +71,10 @@ const preguntas = [
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script is:inline>document.documentElement.classList.add('js')</script>
 </head>
 <body>
+  <div class="progreso" aria-hidden="true"></div>
   <header class="nav">
     <div class="wrap navin">
       <a class="marca" href={BASE} aria-label="Gestia, inicio"><img src={`${BASE}favicon.svg`} alt="" width="32" height="32"><b>gestia</b></a>
@@ -88,10 +91,10 @@ const preguntas = [
   <main>
     <section class="hero">
       <div class="wrap heroc">
-        <p class="eyebrow">Software a medida para pymes</p>
-        <h1>Software que hace <span>crecer</span> tu negocio.</h1>
-        <p class="lead">Sistemas de gestión, páginas web, tiendas online y automatizaciones. Te acompañamos de la idea a la entrega, sin vueltas.</p>
-        <div class="ctas">
+        <p class="eyebrow entra" style="--d:0s">Software a medida para pymes</p>
+        <h1>{h1.map((w, i) => <><span class="w"><span class={w === 'crecer' ? 'm' : undefined} style={`--i:${i}`}>{w}</span></span>{' '}</>)}</h1>
+        <p class="lead entra" style="--d:.45s">Sistemas de gestión, páginas web, tiendas online y automatizaciones. Te acompañamos de la idea a la entrega, sin vueltas.</p>
+        <div class="ctas entra" style="--d:.6s">
           <a class="btn pri lg" href={CONTACTO}>Contanos tu idea <Fragment set:html={svg(I.flecha)} /></a>
           <a class="btn ghost lg" href="#soluciones">Ver soluciones</a>
         </div>
@@ -104,8 +107,10 @@ const preguntas = [
 
     <section class="rubros" aria-label="Rubros">
       <div class="wrap">
-        <p>Trabajamos con</p>
-        <ul>{rubros.map(r => <li>{r}</li>)}</ul>
+        <p>Trabajamos con <span class="solo-lector">{rubros.join(', ')}</span></p>
+        <div class="cinta" aria-hidden="true">
+          <div class="pista">{[0, 1].map(() => <ul>{rubros.map(r => <li>{r}</li>)}</ul>)}</div>
+        </div>
       </div>
     </section>
 
@@ -199,13 +204,42 @@ const preguntas = [
   </footer>
 
   <script>
-    // aparición suave al bajar; sin animación si el sistema pide reducir movimiento
+    const quieto = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const conMouse = matchMedia('(hover: hover) and (pointer: fine)').matches && !quieto;
+
+    // títulos de sección que suben palabra por palabra (el texto queda igual para lectores de pantalla)
+    document.querySelectorAll<HTMLElement>('.tit h2, .pcard h2').forEach(h => {
+      h.classList.add('palabras', 'rv');
+      h.innerHTML = (h.textContent ?? '').trim().split(/\s+/).map((w, i) => `<span class="w"><span style="--i:${i}">${w}</span></span>`).join(' ');
+    });
+
+    // aparición suave al bajar
     const els = document.querySelectorAll('.rv');
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
+    if (quieto || !('IntersectionObserver' in window)) {
       els.forEach(e => e.classList.add('in'));
     } else {
-      const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
+      const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .1, rootMargin: '0px 0px -40px 0px' });
       els.forEach(e => io.observe(e));
+    }
+
+    if (conMouse) {
+      // botones "magnéticos": siguen un poco al mouse
+      document.querySelectorAll<HTMLElement>('.btn').forEach(b => {
+        b.addEventListener('pointermove', e => {
+          const r = b.getBoundingClientRect();
+          b.style.translate = `${((e.clientX - r.left) / r.width - .5) * 22}px ${((e.clientY - r.top) / r.height - .5) * 14}px`;
+        });
+        b.addEventListener('pointerleave', () => { b.style.translate = ''; });
+      });
+      // las capturas de la portada se inclinan hacia el mouse
+      const hero = document.querySelector<HTMLElement>('.hero')!;
+      const vis = hero.querySelector<HTMLElement>('.vis-centro')!;
+      hero.addEventListener('pointermove', e => {
+        const r = hero.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+        vis.style.transform = `perspective(1600px) rotateX(${-y * 6}deg) rotateY(${x * 8}deg)`;
+      });
+      hero.addEventListener('pointerleave', () => { vis.style.transform = ''; });
     }
   </script>
 </body>

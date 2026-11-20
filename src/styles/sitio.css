@@ -10,6 +10,66 @@
 .vis-centro .cel{width:22%;right:-3%}
 @media (max-width:720px){.vis-centro .cel{width:30%;right:-2%}}
 
+/* ===== movimiento (inspirado en la landing de Coudexia, con la paleta de Gestia) ===== */
+:root{--ease:cubic-bezier(.2,.7,.2,1)}
+.solo-lector{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+
+/* barra de lectura: la mueve el propio scroll; sin soporte no se ve */
+.progreso{position:fixed;inset:0 0 auto;z-index:60;height:3px;background:linear-gradient(90deg,var(--accent),var(--mint));transform-origin:0 50%;transform:scaleX(0);pointer-events:none}
+@supports (animation-timeline:scroll()){.progreso{animation:progreso linear both;animation-timeline:scroll(root)}}
+@keyframes progreso{to{transform:scaleX(1)}}
+
+/* portada: luz que se mueve de fondo, título palabra por palabra y el resto en cascada */
+.hero{position:relative;isolation:isolate}
+.hero::before{content:"";position:absolute;z-index:-1;left:-15%;top:-25%;width:min(70vw,820px);aspect-ratio:1;border-radius:50%;background:radial-gradient(closest-side,#0E8F8655,#0E8F8600);animation:deriva 12s ease-in-out infinite alternate;pointer-events:none}
+@keyframes deriva{to{transform:translate(55%,35%) scale(1.25)}}
+.w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.08em;margin-bottom:-.08em}
+.w>span{display:inline-block}
+.hero h1 .w,.hero h1 .w>span{color:inherit}
+.hero h1 .w>span{animation:sube-palabra 1s var(--ease) both;animation-delay:calc(.1s + var(--i)*60ms)}
+.hero h1 .w>span.m{color:var(--mint)}
+@keyframes sube-palabra{from{transform:translateY(105%)}}
+.entra{animation:aparece .9s var(--ease) both;animation-delay:var(--d)}
+@keyframes aparece{from{opacity:0;transform:translateY(18px)}}
+.vis-centro{transition:transform .6s var(--ease);will-change:transform}
+.vis-centro .cel{animation:sube 1s .15s var(--ease) both,flota 6s 1.2s ease-in-out infinite}
+@keyframes flota{50%{translate:0 -14px;rotate:-1.5deg}}
+
+/* rubros: cinta que desfila */
+.cinta{flex:1 1 300px;min-width:0;overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.pista{display:flex;width:max-content;animation:desliza 38s linear infinite}
+.rubros .pista ul{flex-wrap:nowrap;padding-right:8px}
+.rubros .pista li{white-space:nowrap}
+@keyframes desliza{to{transform:translateX(-50%)}}
+
+/* títulos de sección: suben palabra por palabra al aparecer */
+.js .palabras.rv{opacity:1;transform:none}
+.js .palabras .w>span{transform:translateY(105%);transition:transform .9s var(--ease);transition-delay:calc(var(--i)*45ms)}
+.js .palabras.in .w>span{transform:none}
+
+/* aparición más marcada que la de la landing de Gestia */
+.rv{transform:translateY(40px) scale(.98);transition:opacity 1s var(--ease),transform 1s var(--ease)}
+
+/* botones: relleno que sube al pasar el mouse (el corrimiento magnético lo pone el script) */
+.btn{position:relative;isolation:isolate;overflow:hidden;transition:transform .15s ease,background .15s ease,box-shadow .15s ease,translate .3s var(--ease)}
+.btn::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;transform:translateY(101%);transition:transform .4s var(--ease)}
+.btn.pri::before{background:#0b6f68}
+.btn.mint::before{background:#a8efc6}
+.btn.ghost::before{background:#ffffff1f}
+.btn.sec-link::before{background:var(--accent-soft)}
+.btn:hover::before{transform:none}
+
+/* el bloque de contacto se "abre" de tarjeta angosta a su ancho al entrar en pantalla */
+@supports (animation-timeline:view()){
+  .pcard{animation:abre linear both;animation-timeline:view();animation-range:entry 0% entry 70%}
+}
+@keyframes abre{from{clip-path:inset(0 8% round 56px)}to{clip-path:inset(0 0 round 24px)}}
+
+@media (prefers-reduced-motion:reduce){
+  .js .palabras .w>span{transform:none}
+  .rv{opacity:1;transform:none}
+}
+
 .num{font-weight:800;font-size:20px}
 .showtxt .ctas{margin-top:28px}
 .btn.sec-link{color:var(--accent);border-color:#0E8F8655}
